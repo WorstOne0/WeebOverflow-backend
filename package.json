@@ -1,0 +1,20 @@
+{
+  "name": "Dollars-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.18.1",
+    "apollo-server-express": "^2.18.1",
+    "express": "^4.17.1",
+    "graphql": "^15.3.0",
+    "mongoose-paginate-v2": "^1.3.9",
+    "nodemon": "^2.0.4"
+  }
+}
