@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -13,6 +14,7 @@ const UserSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true,
+    unique: true,
   },
   screenName: {
     type: String,
@@ -29,6 +31,11 @@ const UserSchema = new mongoose.Schema({
   thirdParty: {
     type: String,
     required: true,
+  },
+  count: {
+    type: Number,
+    required: false,
+    default: 0,
   },
   createdAt: {
     type: Date,

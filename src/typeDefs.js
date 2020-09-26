@@ -25,9 +25,11 @@ module.exports = gql`
 
   type Query {
     users: [User!]!
-    getUser(userId: String!): User!
+    getUser(userId: ID!): User
+    getLoggedUser: User
+
     posts: [Post!]!
-    getPost(postId: String!): Post!
+    getPost(postId: ID!): Post
   }
 
   type Mutation {
@@ -37,7 +39,16 @@ module.exports = gql`
       userName: String!
       screenName: String!
       thirdParty: String!
-    ): User!
-    addPost(userId: String!, text: String!, tags: [String!]!): Post!
+    ): User
+    updateUser: User!
+    login(
+      email: String!
+      password: String!
+      thirdParty: String!
+      thirdPartyPayloadJSON: String
+    ): User
+    logout: Boolean!
+
+    addPost(text: String!, tags: [String!]!): Post
   }
 `;
