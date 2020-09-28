@@ -7,8 +7,8 @@ module.exports = gql`
     password: String
     userName: String!
     screenName: String!
-    profilePicture: String!
-    thumbnail: String!
+    profilePicture: String
+    thumbnail: String
     posts: [Post!]!
     thirdParty: String!
   }
@@ -16,7 +16,7 @@ module.exports = gql`
   type Post {
     id: ID!
     text: String!
-    postedBy: String!
+    postedBy: ID!
     user: User!
     tags: [String!]!
     likes: Int!

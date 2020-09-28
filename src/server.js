@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 
 const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
@@ -21,10 +22,16 @@ const startServer = async () => {
 
   const app = express();
   app.use(cookieParser());
+  app.use(
+    cors({
+      origin: ["https://localhost:3000", "http://localhost:3000"],
+      credentials: true,
+    })
+  );
 
   app.use((req, res, next) => setRefreshToken(req, res, next));
 
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, cors: false });
 
   await mongoose.connect(process.env.MONGO_DB, {
     useNewUrlParser: true,

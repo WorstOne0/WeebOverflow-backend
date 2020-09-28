@@ -73,7 +73,6 @@ module.exports = {
         const { idToken } = JSON.parse(thirdPartyPayloadJSON);
 
         const client = new OAuth2Client(process.env.CLIENT_ID);
-
         const ticket = await client.verifyIdToken({
           idToken: idToken,
           audience: process.env.CLIENT_ID,
@@ -81,7 +80,23 @@ module.exports = {
 
         const payload = ticket.getPayload();
 
-        const user = await User.findOne({ email: payload["email"] });
+        /*const user = await User.findOne({ email: payload["email"] });
+
+        if(!user) {
+          const hashedPassword = await bcrypt.hash("Google_User_Random_Password", 10);
+
+          const newUser = new User({
+            email,
+            password: hashedPassword,
+            userName,
+            screenName,
+            thirdParty,
+          });
+  
+          return await newUser.save();
+        }
+
+        return user;*/
       }
     },
     logout: async (_, __, { req, res }) => {
