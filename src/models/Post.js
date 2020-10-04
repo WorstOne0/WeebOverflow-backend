@@ -6,8 +6,16 @@ const PostSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  text: {
+  title: {
     type: String,
+    required: true,
+  },
+  thumbnail: {
+    type: String,
+    required: false,
+  },
+  text: {
+    type: [Object],
     required: true,
   },
   tags: {

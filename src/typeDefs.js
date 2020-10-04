@@ -1,6 +1,9 @@
 const { gql } = require("apollo-server-express");
 
 module.exports = gql`
+  scalar Date
+  scalar Anything
+
   type User {
     id: ID!
     email: String!
@@ -11,16 +14,32 @@ module.exports = gql`
     thumbnail: String
     posts: [Post!]!
     thirdParty: String!
+    createdAt: Date!
   }
 
   type Post {
     id: ID!
-    text: String!
+    thumbnail: String
+    title: String!
+    text: [Text!]!
     postedBy: ID!
     user: User!
     tags: [String!]!
     likes: Int!
     comments: Int!
+    createdAt: Date!
+  }
+
+  type Text {
+    type: String!
+    value: [Anything!]!
+    files: [Upload]!
+  }
+
+  input TextInput {
+    type: String!
+    value: [Anything!]!
+    files: [Upload]!
   }
 
   type Query {
@@ -49,6 +68,11 @@ module.exports = gql`
     ): User
     logout: Boolean!
 
-    addPost(text: String!, tags: [String!]!): Post
+    addPost(
+      title: String!
+      thumbnail: String
+      text: [TextInput!]!
+      tags: [String]!
+    ): Post
   }
 `;

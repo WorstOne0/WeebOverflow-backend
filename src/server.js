@@ -1,13 +1,11 @@
-const { ApolloServer, ApolloError } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
 const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
-const User = require("./models/User");
 
 const { setRefreshToken } = require("./jwt");
 
@@ -18,6 +16,11 @@ const startServer = async () => {
     typeDefs,
     resolvers,
     context: ({ req, res }) => ({ req, res }),
+  });
+
+  await mongoose.connect(process.env.MONGO_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
 
   const app = express();
@@ -32,11 +35,6 @@ const startServer = async () => {
   app.use((req, res, next) => setRefreshToken(req, res, next));
 
   server.applyMiddleware({ app, cors: false });
-
-  await mongoose.connect(process.env.MONGO_DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
 
   app.listen({ port: process.env.PORT }, () =>
     console.log(`Server ready at => http://localhost:4000${server.graphqlPath}`)

@@ -1,5 +1,6 @@
 const userResolvers = require("./User");
 const postResolvers = require("./Post");
+const custom = require("./Custom");
 
 module.exports = {
   Query: {
@@ -18,5 +19,13 @@ module.exports = {
 
   Post: {
     ...postResolvers.Post,
+  },
+
+  Date: {
+    ...custom.Date,
+  },
+
+  Anything: {
+    ...custom.Anything,
   },
 };
