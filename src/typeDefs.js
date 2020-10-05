@@ -19,7 +19,7 @@ module.exports = gql`
 
   type Post {
     id: ID!
-    thumbnail: String
+    thumbnail: [Anything]
     title: String!
     text: [Text!]!
     postedBy: ID!
@@ -70,7 +70,7 @@ module.exports = gql`
 
     addPost(
       title: String!
-      thumbnail: String
+      thumbnail: [Anything]
       text: [TextInput!]!
       tags: [String]!
     ): Post
