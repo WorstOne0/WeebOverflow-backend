@@ -31,6 +31,12 @@ module.exports = {
       try {
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        if (screenName === "") {
+          screenName = `User#${Math.floor(
+            (Math.random() * 1000000) % 1000000
+          )}`;
+        }
+
         const user = new User({
           email,
           password: hashedPassword,
@@ -43,6 +49,21 @@ module.exports = {
       } catch (error) {
         throw new ApolloError(error);
       }
+    },
+    emailExists: async (_, { email }) => {
+      const user = await User.findOne({ email });
+
+      if (user) return true;
+
+      return false;
+    },
+
+    userNameExists: async (_, { userName }) => {
+      const user = await User.findOne({ userName });
+
+      if (user) return true;
+
+      return false;
     },
     updateUser: async () => {},
     login: async (

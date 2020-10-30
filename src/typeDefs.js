@@ -59,6 +59,8 @@ module.exports = gql`
       screenName: String!
       thirdParty: String!
     ): User
+    emailExists(email: String!): Boolean
+    userNameExists(userName: String!): Boolean
     updateUser: User!
     login(
       email: String!
