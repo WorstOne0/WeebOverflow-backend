@@ -58,6 +58,7 @@ module.exports = gql`
       userName: String!
       screenName: String!
       thirdParty: String!
+      reCaptchaToken: String!
     ): User
     emailExists(email: String!): Boolean
     userNameExists(userName: String!): Boolean
@@ -67,6 +68,7 @@ module.exports = gql`
       password: String!
       thirdParty: String!
       thirdPartyPayloadJSON: String
+      reCaptchaToken: String!
     ): User
     logout: Boolean!
 

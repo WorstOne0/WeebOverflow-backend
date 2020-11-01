@@ -1,4 +1,5 @@
 const { ApolloError, ValidationError } = require("apollo-server-express");
+const fetch = require("node-fetch");
 const bcrypt = require("bcrypt");
 const { OAuth2Client } = require("google-auth-library");
 
@@ -26,17 +27,29 @@ module.exports = {
   Mutation: {
     createUser: async (
       _,
-      { email, password, userName, screenName, thirdParty }
+      { email, password, userName, screenName, thirdParty, reCaptchaToken }
     ) => {
       try {
+        /*// ReCaptcha
+        const res = await fetch(
+          `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_KEY_SECRET}&response=${reCaptchaToken}`,
+          { method: "POST" }
+        );
+
+        const { success } = await res.json();
+        if (!success) throw new ApolloError("Robot Detected");*/
+
+        // Hash the Password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Generate a default random ScreenName
         if (screenName === "") {
           screenName = `User#${Math.floor(
             (Math.random() * 1000000) % 1000000
           )}`;
         }
 
+        // Create a User
         const user = new User({
           email,
           password: hashedPassword,
@@ -51,6 +64,7 @@ module.exports = {
       }
     },
     emailExists: async (_, { email }) => {
+      // Try to find e user with the Email
       const user = await User.findOne({ email });
 
       if (user) return true;
@@ -59,6 +73,7 @@ module.exports = {
     },
 
     userNameExists: async (_, { userName }) => {
+      // Try to find e user with the UserName
       const user = await User.findOne({ userName });
 
       if (user) return true;
@@ -68,17 +83,29 @@ module.exports = {
     updateUser: async () => {},
     login: async (
       _,
-      { email, password, thirdParty, thirdPartyPayloadJSON },
+      { email, password, thirdParty, thirdPartyPayloadJSON, reCaptchaToken },
       { res }
     ) => {
       if (thirdParty === "None") {
         try {
+          // ReCaptcha
+          const res = await fetch(
+            `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_KEY_SECRET}&response=${reCaptchaToken}`,
+            { method: "POST" }
+          );
+
+          const { success } = await res.json();
+          if (!success) throw new ApolloError("Robot Detected");
+
+          // Try to find e user
           const user = await User.findOne({ email });
 
           if (!user) return null;
 
+          // Decrypt the Password
           if (!(await bcrypt.compare(password, user.password))) return null;
 
+          // Create Tokens
           const { accessToken, refreshToken } = createToken(user);
 
           res.cookie("accessToken", accessToken, { httpOnly: true });
@@ -121,12 +148,15 @@ module.exports = {
       }
     },
     logout: async (_, __, { req, res }) => {
+      // If has no User
       if (!req.userId) return false;
 
+      // Verify the User
       const user = await User.findOne({ _id: req.userId });
 
       if (!user) return false;
 
+      // Delete the Tokens
       user.count += 1;
       await user.save();
 
