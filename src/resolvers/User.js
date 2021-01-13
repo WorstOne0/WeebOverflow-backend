@@ -89,12 +89,12 @@ module.exports = {
       if (thirdParty === "None") {
         try {
           // ReCaptcha
-          const res = await fetch(
+          const reCaptcha = await fetch(
             `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_KEY_SECRET}&response=${reCaptchaToken}`,
             { method: "POST" }
           );
 
-          const { success } = await res.json();
+          const { success } = await reCaptcha.json();
           if (!success) throw new ApolloError("Robot Detected");
 
           // Try to find e user
