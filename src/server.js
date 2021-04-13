@@ -23,11 +23,18 @@ const startServer = async () => {
     useUnifiedTopology: true,
   });
 
+  require("./init.js")();
+
   const app = express();
   app.use(cookieParser());
   app.use(
     cors({
-      origin: ["https://localhost:3000", "http://localhost:3000"],
+      origin: [
+        "https://localhost:3000",
+        "http://localhost:3000",
+        "http://weeboverflow.me",
+        "https://weeboverflow.me",
+      ],
       credentials: true,
     })
   );

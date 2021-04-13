@@ -9,6 +9,7 @@ module.exports = gql`
     email: String!
     password: String
     userName: String!
+    role: String!
     screenName: String!
     profilePicture: String
     thumbnail: String

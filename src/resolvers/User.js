@@ -30,14 +30,14 @@ module.exports = {
       { email, password, userName, screenName, thirdParty, reCaptchaToken }
     ) => {
       try {
-        /*// ReCaptcha
+        // ReCaptcha
         const res = await fetch(
           `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_KEY_SECRET}&response=${reCaptchaToken}`,
           { method: "POST" }
         );
 
         const { success } = await res.json();
-        if (!success) throw new ApolloError("Robot Detected");*/
+        if (!success) throw new ApolloError("Robot Detected");
 
         // Hash the Password
         const hashedPassword = await bcrypt.hash(password, 10);

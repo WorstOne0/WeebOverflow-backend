@@ -16,6 +16,12 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ["Admin", "Moderator", "User", "Guest"],
+    default: "Guest",
+  },
   screenName: {
     type: String,
     required: true,
