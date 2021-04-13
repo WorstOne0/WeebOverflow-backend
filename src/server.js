@@ -34,6 +34,8 @@ const startServer = async () => {
         "http://localhost:3000",
         "http://weeboverflow.me",
         "https://weeboverflow.me",
+        "http://www.weeboverflow.me",
+        "https://www.weeboverflow.me",
       ],
       credentials: true,
     })
