@@ -7,6 +7,11 @@ const { createToken } = require("../jwt");
 const User = require("../models/User");
 const Post = require("../models/Post");
 
+const cookieConfig =
+  process.env.COOKIE_LIVE === "true"
+    ? { httpOnly: true, sameSite: "none", secure: true }
+    : { httpOnly: true };
+
 module.exports = {
   Query: {
     users: () => User.find(),
@@ -108,8 +113,11 @@ module.exports = {
           // Create Tokens
           const { accessToken, refreshToken } = createToken(user);
 
-          res.cookie("accessToken", accessToken, { httpOnly: true });
-          res.cookie("refreshToken", refreshToken, { httpOnly: true });
+          console.log(cookieConfig);
+          console.log(process.env.COOKIE_LIVE);
+
+          res.cookie("accessToken", accessToken, cookieConfig);
+          res.cookie("refreshToken", refreshToken, cookieConfig);
 
           return user;
         } catch (error) {

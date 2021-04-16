@@ -1,5 +1,11 @@
+require("dotenv").config();
+
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
+
+const cookieConfig = process.env.COOKIE_LIVE
+  ? { httpOnly: true, sameSite: "none", secure: true }
+  : { httpOnly: true };
 
 const createToken = (user) => {
   const refreshToken = jwt.sign(
@@ -46,8 +52,8 @@ const setRefreshToken = async (req, res, next) => {
 
     const { accessToken, refreshToken } = createToken(user);
 
-    res.cookie("accessToken", accessToken, { httpOnly: true });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true });
+    res.cookie("accessToken", accessToken, cookieConfig);
+    res.cookie("refreshToken", refreshToken, cookieConfig);
 
     req.userId = user._id;
 
