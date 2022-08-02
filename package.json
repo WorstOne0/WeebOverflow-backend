@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.18.1",
-    "apollo-server-express": "^2.18.1",
+    "apollo-server": "^3.10.0",
+    "apollo-server-express": "^3.10.0",
     "aws-sdk": "^2.765.0",
     "bcrypt": "^5.0.0",
     "cookie-parser": "^1.4.5",

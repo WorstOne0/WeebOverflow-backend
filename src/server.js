@@ -1,4 +1,8 @@
 const { ApolloServer } = require("apollo-server-express");
+const {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageLocalDefault,
+} = require("apollo-server-core");
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -12,9 +16,13 @@ const { setRefreshToken } = require("./jwt");
 require("dotenv").config();
 
 const startServer = async () => {
+  const app = express();
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    csrfPrevention: true,
+    cache: "bounded",
+    plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
     context: ({ req, res }) => ({ req, res }),
   });
 
@@ -25,7 +33,6 @@ const startServer = async () => {
 
   require("./init.js")();
 
-  const app = express();
   app.use(cookieParser());
   app.use(
     cors({
@@ -42,6 +49,8 @@ const startServer = async () => {
   );
 
   app.use((req, res, next) => setRefreshToken(req, res, next));
+
+  await server.start();
 
   server.applyMiddleware({ app, cors: false });
 

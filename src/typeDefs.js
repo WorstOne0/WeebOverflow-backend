@@ -34,13 +34,13 @@ module.exports = gql`
   type Text {
     type: String!
     value: [Anything!]!
-    files: [Upload]!
+    files: [Anything]!
   }
 
   input TextInput {
     type: String!
     value: [Anything!]!
-    files: [Upload]!
+    files: [Anything]!
   }
 
   type Query {
